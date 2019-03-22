@@ -6,7 +6,7 @@
     <h2 class="blog-post-title">${post.title}</h2>
     <p class="blog-post-meta">${post.createdAt | dateFormat } by <a href="#">${post.author}</a></p>
     <p>
-      <a href="#" repeat.for="tag of post.tags">
+      <a route-href="route: tag-view; params.bind: { tag: tag }" repeat.for="tag of post.tags">
         <span class="badge badge-pill badge-primary">${tag}</span>
       </a>
     </p>
