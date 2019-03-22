@@ -21,6 +21,7 @@
     }
   },
   "dependencies": [
+    "moment",
     "jquery",
     {
       "name": "bootstrap",

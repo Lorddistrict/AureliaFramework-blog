@@ -4,17 +4,18 @@ import {PostService} from "../common/services/post-service";
 @inject (PostService)
 
 export class View {
+
   constructor(PostService) {
     this.postService = PostService;
   }
 
   activate(params){
+    this.error = '';
     this.postService.find(params.slug).then(data => {
-      if(data.error){
-        // error
-      } else {
-        this.post = data.post;
-      }
+      this.post = data.post;
+    }).catch(error => {
+      this.error = error.message;
     });
   }
+
 }

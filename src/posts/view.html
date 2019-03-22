@@ -1,14 +1,11 @@
 <template>
-  <div class="blog-post">
-    <h2 class="blog-post-title">${post.title}</h2>
-    <p class="blog-post-meta">${post.createdAt} <a href="#">${post.author}</a></p>
 
-    <p>
-      <a href="#" repeat.for="tag of post.tags">
-        <span class="badge badge-pill badge-primary">${tag}</span>
-      </a>
-    </p>
+  <require from="../resources/elements/blog-post"></require>
 
-    <p>${post.body}</p>
-  </div><!-- /.blog-post -->
+  <div class="alert alert-danger" if.bind="error">
+    ${error}
+  </div>
+
+  <blog-post post.bind="post"></blog-post>
+
 </template>

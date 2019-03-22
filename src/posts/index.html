@@ -1,20 +1,17 @@
 <template>
-  <div class="blog-post" repeat.for="post of posts">
-    <h2 class="blog-post-title">${post.title}</h2>
-    <p class="blog-post-meta">${post.createdAt} <a href="#">${post.author}</a></p>
 
-    <p>
-      <a href="#" repeat.for="tag of post.tags">
-        <span class="badge badge-pill badge-primary">${tag}</span>
-      </a>
-    </p>
+  <require from="../resources/elements/blog-post"></require>
 
-    <p>${post.body}</p>
+  <div class="alert alert-danger" if.bind="error">
+    ${error}
+  </div>
+
+  <div repeat.for="post of posts">
+
+    <blog-post post.bind="post"></blog-post>
+
     <a route-href="route: post-view; params.bind: { slug: post.slug }">View post ></a>
     <hr>
-  </div><!-- /.blog-post -->
-  <nav class="blog-pagination">
-    <a class="btn btn-outline-primary" href="#">Older</a>
-    <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Newer</a>
-  </nav>
+  </div>
+
 </template>

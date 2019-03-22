@@ -41,66 +41,66 @@ export class PostService {
 
 	allPostPreviews() {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	if (this.posts) {
-		  		let previews = this.posts.map(post => {
-			  		return {
-			  			title: post.title,
-			  			body: post.body.substring(0,200) + '...',
-			  			author: post.author,
-			  			slug: post.slug,
-			  			tags: post.tags,
-			  			createdAt: post.createdAt
-			  		}
-			  	});
-			  	previews.sort((a,b) => b.createdAt - a.createdAt);
-			  	resolve({ posts: previews });
-		  	} else {
-		  		resolve({ error: 'There was an error retrieving the posts.' });
-		  	}
-		  }, this.delay);
-		});		
+			setTimeout(() => {
+				if (this.posts) {
+					let previews = this.posts.map(post => {
+						return {
+							title: post.title,
+							body: post.body.substring(0, 200) + '...',
+							author: post.author,
+							slug: post.slug,
+							tags: post.tags,
+							createdAt: post.createdAt
+						}
+					});
+					previews.sort((a, b) => b.createdAt - a.createdAt);
+					resolve({posts: previews});
+				} else {
+					reject(new Error('There was an error retrieving the posts.'));
+				}
+			}, this.delay);
+		});
 	}
 
 	allArchives() {
 		let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	let archives = [];
-		  	this.posts.sort((a,b) => b.createdAt - a.createdAt);
-		  	this.posts.forEach(post => {
-		  		archives.push(`${months[post.createdAt.getMonth()]} ${post.createdAt.getFullYear()}`);
-		  	});
-		  	if (archives) {	
-			  	resolve({ archives: archives.filter((v, i, a) => a.indexOf(v) === i) });		  		
-		  	} else {
-		  		resolve({ error: 'There was an error retrieving the archives.' });
-		  	}
-		  }, this.delay);
-		});		
+			setTimeout(() => {
+				let archives = [];
+				this.posts.sort((a, b) => b.createdAt - a.createdAt);
+				this.posts.forEach(post => {
+					archives.push(`${months[post.createdAt.getMonth()]} ${post.createdAt.getFullYear()}`);
+				});
+				if (archives) {
+					resolve({archives: archives.filter((v, i, a) => a.indexOf(v) === i)});
+				} else {
+					reject(new Error('There was an error retrieving the archives.'));
+				}
+			}, this.delay);
+		});
 	}
 
 	allTags() {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	let tags = [];
-		  	this.posts.forEach(post => {
-		  		tags = tags.concat(post.tags);
-		  	});
-		  	if (tags) {	
-			  	resolve({ tags: tags.filter((v, i, a) => a.indexOf(v) === i) });		  		
-		  	} else {
-		  		resolve({ error: 'There was an error retrieving the tags.' });
-		  	}
-		  }, this.delay);
-		});		
+			setTimeout(() => {
+				let tags = [];
+				this.posts.forEach(post => {
+					tags = tags.concat(post.tags);
+				});
+				if (tags) {
+					resolve({tags: tags.filter((v, i, a) => a.indexOf(v) === i)});
+				} else {
+					reject(new Error('There was an error retrieving the tags.'));
+				}
+			}, this.delay);
+		});
 	}
 
 	create(post) {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	let currentUser = this.authService.currentUser;
-		  	let slug = this.slugify(post.title);
+			setTimeout(() => {
+				let currentUser = this.authService.currentUser;
+				let slug = this.slugify(post.title);
 				if (currentUser) {
 					this.posts.push({
 						title: post.title,
@@ -108,80 +108,82 @@ export class PostService {
 						author: currentUser,
 						slug,
 						tags: post.tags,
-						createdAt: new Date()						
+						createdAt: new Date()
 					});
-					resolve({ slug });
+					resolve({slug});
 				} else {
-					resolve({ error: 'You must be logged in to create a post.' });
+					reject(new Error('You must be logged in to create a post.'));
 				}
-		  }, this.delay);
-		});	
+			}, this.delay);
+		});
 	}
 
 	find(slug) {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	let post = this.posts.sort((a,b) => b.createdAt - a.createdAt).find(post => post.slug.toLowerCase() === slug.toLowerCase());
-		  	if (post) {
-			  	resolve({ post });
-		  	} else {
-		  		resolve( { error: 'Post not found.' } );
-		  	}
-		  }, this.delay);
-		});	
+			setTimeout(() => {
+				let post = this.posts.sort((a, b) => b.createdAt - a.createdAt).find(post => post.slug.toLowerCase() === slug.toLowerCase());
+				if (post) {
+					resolve({post});
+				} else {
+					reject(new Error('Post not found.'));
+				}
+			}, this.delay);
+		});
 	}
 
-	postsByTag(tag) {		
+	postsByTag(tag) {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	if (!this.posts) {
-		  		resolve({ error: 'Error finding posts.' });
-		  	} else {
-			  	resolve({ posts: this.posts.filter(post => post.tags.includes(tag)).sort((a,b) => b.createdAt - a.createdAt) });
-		  	}
-		  }, this.delay);
-		});			
+			setTimeout(() => {
+				if (!this.posts) {
+					reject(new Error('Error finding posts.'));
+				} else {
+					resolve({posts: this.posts.filter(post => post.tags.includes(tag)).sort((a, b) => b.createdAt - a.createdAt)});
+				}
+			}, this.delay);
+		});
 	}
 
 	postsByArchive(archive) {
 		let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	if (!this.posts) {
-		  		resolve({ error: 'Error finding posts.' });
-		  	} else {
-			  	resolve({ posts: this.posts.filter(post => {
-			  		return archive === `${months[post.createdAt.getMonth()]} ${post.createdAt.getFullYear()}`;
-			  	}).sort((a,b) => b.createdAt - a.createdAt) });
-		  	}
-		  }, this.delay);
-		});			
+			setTimeout(() => {
+				if (!this.posts) {
+					reject(new Error('Error finding posts.'));
+				} else {
+					resolve({
+						posts: this.posts.filter(post => {
+							return archive === `${months[post.createdAt.getMonth()]} ${post.createdAt.getFullYear()}`;
+						}).sort((a, b) => b.createdAt - a.createdAt)
+					});
+				}
+			}, this.delay);
+		});
 	}
 
 	slugify(text) {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-')
-    .replace(/^-+/, '')
-    .replace(/-+$/, '');
+		return text.toString().toLowerCase()
+				.replace(/\s+/g, '-')
+				.replace(/[^\w\-]+/g, '')
+				.replace(/\-\-+/g, '-')
+				.replace(/^-+/, '')
+				.replace(/-+$/, '');
 	}
 
 	update(post) {
 		return new Promise((resolve, reject) => {
-		  setTimeout(() => {
-		  	// Get post based on slug and auther
-		  	let toUpdate = this.posts.find(x => {
-		  		return x.slug === post.slug && x.author === this.authService.currentUser;
-		  	})
-		  	if (!toUpdate) {
-		  		resolve({ error: 'There was an error updating the post.' });	
-		  	} else {
-		  		toUpdate = post;
-		  		resolve({ slug: toUpdate.slug });
-		  	}
-		  }, this.delay);
-		});			
+			setTimeout(() => {
+				// Get post based on slug and auther
+				let toUpdate = this.posts.find(x => {
+					return x.slug === post.slug && x.author === this.authService.currentUser;
+				})
+				if (!toUpdate) {
+					reject(new Error('There was an error updating the post.'));
+				} else {
+					toUpdate = post;
+					resolve({slug: toUpdate.slug});
+				}
+			}, this.delay);
+		});
 	}
 
 }
