@@ -10,6 +10,7 @@ export class TagView {
 
   activate(params){
     this.tag = params.tag;
+    this.title = `Viewing posts by tag : ${this.tag}`;
     this.postService.postsByTag(this.tag).then(data => {
       this.posts = data.posts;
     }).catch(error => {

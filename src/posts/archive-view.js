@@ -10,6 +10,7 @@ export class ArchiveView {
 
   activate(params){
     this.archive = params.archive;
+    this.title = `Viewing posts from ${this.archive}`;
     this.postService.postsByArchive(this.archive).then(data => {
       this.posts = data.posts;
     }).catch(error => {
