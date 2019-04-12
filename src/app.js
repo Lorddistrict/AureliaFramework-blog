@@ -47,7 +47,15 @@ export class App {
 
   detached(){
     // We can also detach our subscriber by clicking the DISPOSE button.
-  this.subscription.dispose();
+    this.subscription.dispose();
+  }
+
+  logout(){
+    this.authService.logout().then(data => {
+      this.ea.publish('myEventName', null);
+    }).catch(error => {
+      this.error = error.message;
+    });
   }
 
 }
