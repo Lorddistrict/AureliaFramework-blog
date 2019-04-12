@@ -35,6 +35,7 @@ export class App {
   }
 
   configureRouter(config, router) {
+    this.router = router;
     config.title = 'Lord\'s Blog';
     config.map([
       {route: '', name: 'home', moduleId: PLATFORM.moduleName('posts/index'), title: 'All posts'},

@@ -22,8 +22,8 @@
 
     <div class="nav-scroller py-1 mb-2">
       <nav class="nav d-flex justify-content-between">
-        <a class="p-2 text-muted" route-href="home">Home</a>
-        <a class="p-2 text-muted" route-href="login" if.bind="!currentUser">Me connecter</a>
+        <a class="p-2 text-muted ${ router.currentInstruction.config.name === 'home' ? 'active' : '' } " route-href="home">Home</a>
+        <a class="p-2 text-muted ${ router.currentInstruction.config.name === 'login' ? 'active' : '' } " route-href="login" if.bind="!currentUser">Me connecter</a>
         <a class="p-2 text-muted" href="#" if.bind="!currentUser">S'enregistrer</a>
         <a class="p-2 text-muted" href="#" if.bind="currentUser">Nouveau Post</a>
         <a class="p-2 text-muted" href="#" if.bind="currentUser" click.delegate="logout()">Déconnexion</a>

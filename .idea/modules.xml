@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/blog-start.iml" filepath="$PROJECT_DIR$/.idea/blog-start.iml" />
+      <module fileurl="file:///var/www/netstim/.idea/netstim.iml" filepath="/var/www/netstim/.idea/netstim.iml" />
     </modules>
   </component>
 </project>
